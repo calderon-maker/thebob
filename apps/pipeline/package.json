@@ -9,6 +9,7 @@
     "build": "tsc",
     "start:worker": "node dist/worker.js",
     "start:scheduler": "node dist/scheduler.js",
+    "benchmark:pilot": "env -u ANTHROPIC_API_KEY npx tsx --env-file=.env.local src/benchmarks/run-pilot.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

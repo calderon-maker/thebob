@@ -55,3 +55,12 @@ ecosystem.config.local.cjs
 # Backups locais
 *.bak
 *.backup
+
+# BCX, credenciais de Ads (ver bcx-skills/bcx-ads-api/references/seguranca-tokens.md)
+credentials.md
+**/credentials.md
+*.token
+*.secret
+google-ads.yaml
+**/google-ads.yaml
+client_secret*.json
