@@ -1,0 +1,67 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build (web + pipeline + db)
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_BOB_URL: ${{ secrets.NEXT_PUBLIC_BOB_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_GA_ID: ${{ secrets.NEXT_PUBLIC_GA_ID }}
+
+      - name: Deploy via SSH para VPS BCX
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.BCX_VPS_HOST }}
+          username: ${{ secrets.BCX_VPS_USER }}
+          key: ${{ secrets.BCX_VPS_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -e
+            export PATH="$HOME/.local/share/fnm:$PATH"
+            eval "$(fnm env)"
+            fnm use 20
+
+            cd /home/bcx/apps/thebob
+            git fetch --all
+            git reset --hard origin/main
+            pnpm install --frozen-lockfile
+            pnpm build
+            pm2 reload ecosystem.config.cjs --update-env
+            pm2 save
+
+      - name: Notificar healthcheck
+        run: |
+          sleep 10
+          curl -fsSL "https://thebob.com.br/api/health" | tee /dev/stderr | grep '"status":"ok"'

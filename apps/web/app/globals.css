@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta Gold Editorial, definida na Memória do projeto thebob v1.4 */
+  --color-onix: #0A0A0F;
+  --color-bob-gold: #B8941F;
+  --color-bob-gold-light: #F4EBD0;
+  --color-offwhite: #F5F2E8;
+  --color-graphite: #3A3F4B;
+  --color-line: #D8D8D0;
+
+  --font-display: "Canela", "PP Editorial New", "Times New Roman", serif;
+  --font-sans: "Inter", "Söhne", system-ui, -apple-system, sans-serif;
+  --font-numeric: "GT Super", "Canela", serif;
+}
+
+:root {
+  color-scheme: light;
+  background: var(--color-offwhite);
+  color: var(--color-onix);
+}
+
+html, body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--color-bob-gold);
+  color: var(--color-onix);
+}
