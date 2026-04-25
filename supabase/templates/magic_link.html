@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seu link de acesso ao TheBob</title>
+</head>
+<body style="font-family: -apple-system, system-ui, sans-serif; background: #F5F2E8; color: #0A0A0F; padding: 32px;">
+  <div style="max-width: 480px; margin: 0 auto; background: #ffffff; padding: 32px; border-radius: 12px; border: 1px solid #D8D8D0;">
+    <p style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #3A3F4B; margin: 0 0 16px 0;">The BoB</p>
+    <h1 style="font-family: Georgia, serif; font-size: 28px; line-height: 1.2; margin: 0 0 16px 0;">Seu link de acesso</h1>
+    <p style="font-size: 16px; line-height: 1.5; color: #3A3F4B;">
+      Olá. Para entrar no TheBob, basta clicar no botão abaixo. O link é válido por 1 hora e funciona uma vez só.
+    </p>
+    <p style="margin: 24px 0;">
+      <a href="{{ .ConfirmationURL }}"
+         style="display: inline-block; background: #0A0A0F; color: #F4EBD0; padding: 14px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; font-size: 14px;">
+        Entrar no TheBob
+      </a>
+    </p>
+    <p style="font-size: 13px; color: #3A3F4B; line-height: 1.5;">
+      Se o botão não funcionar, copia este endereço no navegador:<br/>
+      <span style="word-break: break-all; color: #B8941F;">{{ .ConfirmationURL }}</span>
+    </p>
+    <hr style="border: none; border-top: 1px solid #D8D8D0; margin: 32px 0;" />
+    <p style="font-size: 12px; color: #3A3F4B;">
+      Se não foi você que solicitou este acesso, ignore esta mensagem com tranquilidade.
+    </p>
+  </div>
+</body>
+</html>

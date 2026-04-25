@@ -29,7 +29,7 @@ create index profiles_segment_idx on public.profiles(segment);
 create table public.prospects (
   id bigserial primary key,
   full_name text not null,
-  email citext unique not null,
+  email text not null,
   linkedin_url text not null,
   segment text not null,
   consent boolean not null default false,
@@ -38,6 +38,8 @@ create table public.prospects (
   ip_hash text,
   created_at timestamptz not null default now()
 );
+
+create unique index prospects_email_lower_idx on public.prospects (lower(email));
 
 -- ---------- subscriptions (Fase 3, paywall) ----------
 create table public.subscriptions (
@@ -204,8 +206,3 @@ create policy "admin jobs" on public.jobs
   for all using (
     exists (select 1 from public.profiles p where p.id = auth.uid() and p.role = 'admin')
   );
-
--- =====================================================
--- citext para email case-insensitive em prospects
--- =====================================================
-create extension if not exists citext;
